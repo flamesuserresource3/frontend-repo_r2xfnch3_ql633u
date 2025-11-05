@@ -1,28 +1,29 @@
-import { useState } from 'react'
+import React, { useMemo, useState } from 'react';
+import Hero from './components/Hero';
+import DriverDirectory from './components/DriverDirectory';
+import DriverProfile from './components/DriverProfile';
+import Schedule from './components/Schedule';
 
-function App() {
-  const [count, setCount] = useState(0)
+export default function App() {
+  const [selected, setSelected] = useState(null);
+  const hasSelection = useMemo(() => !!selected, [selected]);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-50 to-blue-50 flex items-center justify-center">
-      <div className="bg-white p-8 rounded-lg shadow-lg">
-        <h1 className="text-3xl font-bold text-gray-800 mb-4">
-          Vibe Coding Platform
-        </h1>
-        <p className="text-gray-600 mb-6">
-          Your AI-powered development environment
-        </p>
-        <div className="text-center">
-          <button
-            onClick={() => setCount(count + 1)}
-            className="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded"
-          >
-            Count is {count}
-          </button>
-        </div>
-      </div>
-    </div>
-  )
-}
+    <div className="min-h-screen bg-[#0A0A0B] text-white">
+      <Hero />
 
-export default App
+      <main className="relative">
+        <DriverDirectory onSelect={setSelected} />
+        {hasSelection && <DriverProfile driver={selected} />}
+        <Schedule />
+      </main>
+
+      <footer className="border-t border-white/10 py-8 mt-8">
+        <div className="max-w-6xl mx-auto px-6 flex flex-col sm:flex-row items-center justify-between gap-3 text-white/60 text-sm">
+          <p>© {new Date().getFullYear()} F1 Live Hub. Unofficial fan project.</p>
+          <p>Data updates automatically from the connected API.</p>
+        </div>
+      </footer>
+    </div>
+  );
+}
